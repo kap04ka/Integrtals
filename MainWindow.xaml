@@ -6,7 +6,114 @@
         xmlns:local="clr-namespace:Integrtals"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    
+    <Grid Background="#C7C7C7">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Text="Количество разбиений"
+            Grid.Column="1"
+            Grid.Row="1"
+            FontSize="12"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+
+        />
+        <TextBox
+            Grid.Column="2"
+            Grid.Row="1"
+            Grid.ColumnSpan="1"
+            Margin="10 0 10 0"
+            VerticalAlignment="Center"
+            x:Name="splitCount"
+        />
+
+        <TextBlock
+            Text="Верхний предел"
+            Grid.Column="1"
+            Grid.Row="2"
+            FontSize="12"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+        />
+        <TextBox
+            Grid.Column="2"
+            Grid.Row="2"
+            Grid.ColumnSpan="1"
+            Margin="10 0 10 0"
+            VerticalAlignment="Center"
+            x:Name="upperLimit"
+            
+        />
+
+        <TextBlock
+            Text="Нижний предел"
+            Grid.Column="1"
+            Grid.Row="3"
+            FontSize="12"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+        />
+        <TextBox
+            Grid.Column="2"
+            Grid.Row="3"
+            Grid.ColumnSpan="1"
+            Margin="10 0 10 0"
+            VerticalAlignment="Center"
+            x:Name="lowerLimit"
+        />
+
+        <Button
+            Grid.Column="3"
+            Grid.Row="4"
+            Content="Рассчитать"
+            FontSize="15"
+            FontWeight="Bold"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Height="30"
+            Width="150"
+            x:Name="btCalculate"
+            Click="btCalculate_Click"
+            Background="White"
+        />
+        
+        <TextBlock
+            Text="Выберите метод"
+            Grid.Column="1"
+            Grid.Row="4"
+            FontSize="12"
+            FontWeight="Bold"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+        />
+        <ComboBox Name="methods" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" Margin="10 0 10 0">
+            <ComboBoxItem IsSelected="True">
+                <TextBlock Text="Метод Симсона"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Text="Метод трапеций"/> 
+            </ComboBoxItem>
+        </ComboBox>
 
     </Grid>
 </Window>

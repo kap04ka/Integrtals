@@ -24,5 +24,13 @@ namespace Integrtals
         {
             InitializeComponent();
         }
+
+        private void btCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            int splits = Convert.ToInt32(splitCount.Text);
+            int upLim = Convert.ToInt32(upperLimit.Text);
+            int lowLim = Convert.ToInt32(lowerLimit.Text);
+            MessageBox.Show($"Количество разбиений = {splits}\nВерхний предел = {upLim}\nНижний предел = {lowLim}");
+        }
     }
 }
