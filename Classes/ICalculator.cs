@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Integrtals.Classes
 {
-    interface ICalculator
+    public interface ICalculator
     {
         double Calculate(double splitCount, double upLim, double lowLim, Func<double, double> integral, out double time);
 

@@ -44,10 +44,10 @@ namespace Integrtals
             int lowLim = Convert.ToInt32(lowerLimit.Text);
             ICalculator calcultGraph = new SimpsonCalculate();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 1; i < 1000; i++)
             {
                 double time = 0;
-                double result = calcultGraph.Calculate(i, upLim, lowLim, x => (32 * x) - Math.Log(2 * x) - 41, out time);
+                double result = calcultGraph.Calculate(i, upLim, lowLim, x => x * x, out time);
                 lineSeries.Points.Add(new DataPoint(i, time));
             }
 
@@ -72,10 +72,8 @@ namespace Integrtals
             double time = 0;
 
             ICalculator calcult = GetCalculator();
-            double result = calcult.Calculate(splits, upLim, lowLim, x => (32 * x) - Math.Log(2 * x) - 41, out time);
+            double result = calcult.Calculate(splits, upLim, lowLim, x => x * x, out time);
             MessageBox.Show($"Результат вычислений = {result.ToString()}");
         }
-
-        
     }
 }
