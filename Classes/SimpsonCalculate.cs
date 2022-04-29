@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Integrtals.Classes
 {
@@ -19,19 +20,20 @@ namespace Integrtals.Classes
             double h = (double)((upLim - lowLim) / splitCount);
             double sum1 = 0.0;
             double sum2 = 0.0;
+            object monitor = new object();
 
-            Parallel.For(1, splitCount+1, SumArea);
+            Parallel.For(1, splitCount + 1, SumArea);
 
             void SumArea(int k)
             {
                 double xk = lowLim + k * h;
                 if (k <= splitCount - 1)
                 {
-                    sum1 += integral(xk);
+                    lock (monitor) sum1 += integral(xk);
                 }
 
                 double xk_1 = lowLim + (k - 1) * h;
-                sum2 += integral((xk + xk_1) / 2);
+                lock (monitor) sum2 += integral((xk + xk_1) / 2);
             };
 
             /*for (int k = 1; k <= splitCount; k++)
