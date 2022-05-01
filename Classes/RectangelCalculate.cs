@@ -10,7 +10,7 @@ namespace Integrtals.Classes
 {
     public class RectangelCalculate : ICalculator
     {
-        double ICalculator.Calculate(int splitCount, double upLim, double lowLim, Func<double, double> integral, out double time)
+        double ICalculator.Calculate(int splitCount, double upLim, double lowLim, Func<double, double> integral, bool parallel, out double time)
         {
             if (splitCount <= 0) throw new ArgumentException();
 
@@ -21,34 +21,26 @@ namespace Integrtals.Classes
             double area = 0;
             double sums = 0;
 
-            /* Parallel.For(1, splitCount, i =>
-             {
-
-                 area += integral(lowLim + h * i);
-
-             });*/
-            object monitor = new object();
-
-            Parallel.For(0, splitCount, i =>
-
+            if (parallel)
             {
-                lock (monitor) area += integral(lowLim + h * i);
+                object monitor = new object();
 
-            });
+                Parallel.For(1, splitCount, i =>
 
-            /*Parallel.For(1, splitCount, SumArea);
+                {
+                    lock (monitor) area += integral(lowLim + h * i);
 
-            void SumArea(int i) {
-                
-                sums = lowLim + h * i;
-                area += integral(sums);
+                });
+            }
 
-            };*/
-
-            /*for (int i = 1; i < splitCount; i++)
+            else
             {
-                area += integral(lowLim + h * i);
-            }*/
+                for (int i = 1; i < splitCount; i++)
+                {
+                    area += integral(lowLim + h * i);
+                }
+
+            }
 
             area += (integral(lowLim) + integral(upLim)) / 2;
 

@@ -8,7 +8,7 @@ namespace Integrtals.Classes
 {
     public interface ICalculator
     {
-        double Calculate(int splitCount, double upLim, double lowLim, Func<double, double> integral, out double time);
+        double Calculate(int splitCount, double upLim, double lowLim, Func<double, double> integral, bool parallel, out double time);
 
     }
 }

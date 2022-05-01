@@ -39,7 +39,7 @@ namespace Integrtals
                 Title = "32x - log(10x) - 41"
             };
             var lineSeries = new LineSeries();
-
+            bool parallel = false;
             int upLim = Convert.ToInt32(upperLimit.Text);
             int lowLim = Convert.ToInt32(lowerLimit.Text);
             ICalculator calcultGraph = new SimpsonCalculate();
@@ -47,7 +47,7 @@ namespace Integrtals
             for (int i = 1; i < 1000; i++)
             {
                 double time = 0;
-                double result = calcultGraph.Calculate(i, upLim, lowLim, x => x * x, out time);
+                double result = calcultGraph.Calculate(i, upLim, lowLim, x => x * x, parallel, out time);
                 lineSeries.Points.Add(new DataPoint(i, time));
             }
 
@@ -64,15 +64,26 @@ namespace Integrtals
             };
         }
 
+        private new bool GetType()
+        {
+            return parallel.SelectedIndex switch
+            {
+                0 => false,
+                1 => true,
+                _ => throw new NotImplementedException(),
+            };
+        }
+
         private void DoCalculate()
         {
             int splits = Convert.ToInt32(splitCount.Text);
             int upLim = Convert.ToInt32(upperLimit.Text);
             int lowLim = Convert.ToInt32(lowerLimit.Text);
+            bool parallel = GetType();
             double time = 0;
 
             ICalculator calcult = GetCalculator();
-            double result = calcult.Calculate(splits, upLim, lowLim, x => x * x, out time);
+            double result = calcult.Calculate(splits, upLim, lowLim, x => x * x, parallel, out time);
             MessageBox.Show($"Результат вычислений = {result.ToString()}");
         }
     }

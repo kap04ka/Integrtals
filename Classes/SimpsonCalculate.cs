@@ -10,7 +10,7 @@ namespace Integrtals.Classes
 {
     public class SimpsonCalculate : ICalculator
     {
-        double ICalculator.Calculate(int splitCount, double upLim, double lowLim, Func<double, double> integral, out double time)
+        double ICalculator.Calculate(int splitCount, double upLim, double lowLim, Func<double, double> integral, bool parallel, out double time)
         {
             if (splitCount <= 0) throw new ArgumentException();
 
@@ -20,33 +20,41 @@ namespace Integrtals.Classes
             double h = (double)((upLim - lowLim) / splitCount);
             double sum1 = 0.0;
             double sum2 = 0.0;
-            object monitor = new object();
 
-            Parallel.For(1, splitCount + 1, SumArea);
-
-            void SumArea(int k)
+            if (parallel)
             {
-                double xk = lowLim + k * h;
-                if (k <= splitCount - 1)
+
+                object monitor = new object();
+
+                Parallel.For(1, splitCount + 1, SumArea);
+
+                void SumArea(int k)
                 {
-                    lock (monitor) sum1 += integral(xk);
-                }
+                    double xk = lowLim + k * h;
+                    if (k <= splitCount - 1)
+                    {
+                        lock (monitor) sum1 += integral(xk);
+                    }
 
-                double xk_1 = lowLim + (k - 1) * h;
-                lock (monitor) sum2 += integral((xk + xk_1) / 2);
-            };
+                    double xk_1 = lowLim + (k - 1) * h;
+                    lock (monitor) sum2 += integral((xk + xk_1) / 2);
+                };
 
-            /*for (int k = 1; k <= splitCount; k++)
+            }
+            else
             {
-                double xk = lowLim + k * h;
-                if (k <= splitCount - 1)
+                for (int k = 1; k <= splitCount; k++)
                 {
-                    sum1 += integral(xk);
-                }
+                    double xk = lowLim + k * h;
+                    if (k <= splitCount - 1)
+                    {
+                        sum1 += integral(xk);
+                    }
 
-                double xk_1 = lowLim + (k - 1) * h;
-                sum2 += integral((xk + xk_1) / 2);
-            }*/
+                    double xk_1 = lowLim + (k - 1) * h;
+                    sum2 += integral((xk + xk_1) / 2);
+                }
+            }
 
             double result = h / 3d * (1d / 2d * integral(lowLim) + sum1 + 2 * sum2 + 1d / 2d * integral(upLim));
             stopWatch.Stop();
